@@ -1,9 +1,9 @@
 function landingPage() {
     return (
         <div>
-            <h1>califorsale.org landing page</h1>
+            <h1>landingPage</h1>
         </div>
-    )
+    );
 }
 
-export default landingPage
+export default landingPage;
