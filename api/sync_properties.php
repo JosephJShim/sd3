@@ -3,7 +3,7 @@
 // This script fetches property listings from Trestle API and stores them in local database
 
 // Include local database configuration
-include('includes/db_local.php');
+include('../includes/db_local.php');
 
 // Enable error reporting for debugging
 error_reporting(E_ALL);

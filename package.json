@@ -1,0 +1,19 @@
+{
+  "name": "sd3",
+  "version": "1.0.0",
+  "description": "### 1. Setup Database Locally ```bash # Open Terminal and run these commands to create database and user mysql -u root -p CREATE DATABASE sd3; CREATE USER 'sd3_user'@'localhost' IDENTIFIED BY 'your_password'; GRANT ALL PRIVILEGES ON sd3.* TO 'sd3_user'@'localhost'; FLUSH PRIVILEGES; EXIT;",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laiyumi/sd3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/laiyumi/sd3/issues"
+  },
+  "homepage": "https://github.com/laiyumi/sd3#readme"
+}
