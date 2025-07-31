@@ -1,6 +1,6 @@
 <?php
-require_once 'includes/db_local.php';
-require_once 'includes/functions.php';
+include('../includes/db_local.php');
+include('../includes/functions.php');
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

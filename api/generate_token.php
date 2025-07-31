@@ -3,7 +3,7 @@
 // Run this once to generate and store your API token
 
 // Include local database configuration
-include('includes/db_local.php');
+include('../includes/db_local.php');
 
 // Trestle API credentials
 $token_type = 'trestle';
