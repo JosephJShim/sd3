@@ -108,7 +108,9 @@ sort($cities);
             color: white;
             padding: 1rem 0;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: relative;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
             min-height: 80px;
         }
 
@@ -843,6 +845,236 @@ sort($cities);
             box-shadow: 0 6px 20px rgba(0,0,0,0.2);
         }
 
+        /* Comparison Styles */
+        .comparison-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s;
+        }
+
+        .comparison-controls.visible {
+            display: flex;
+        }
+
+        .comparison-count {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .compare-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .compare-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .compare-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .clear-comparison-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .clear-comparison-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .property-checkbox {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .property-card {
+            position: relative;
+        }
+
+        .property-card.selected {
+            border: 3px solid #667eea;
+            transform: translateY(-2px);
+        }
+
+        .table-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .property-table tr.selected {
+            background-color: #e0e7ff;
+            border-left: 4px solid #667eea;
+        }
+
+        /* Comparison Modal */
+        .comparison-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .comparison-modal.visible {
+            display: block;
+        }
+
+        .comparison-content {
+            background: white;
+            margin: 2rem auto;
+            max-width: 1200px;
+            border-radius: 12px;
+            position: relative;
+            min-height: calc(100vh - 4rem);
+        }
+
+        .comparison-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .comparison-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .modal-close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .comparison-property {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .comparison-property-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .comparison-property-content {
+            padding: 1.5rem;
+        }
+
+        .comparison-property-price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .comparison-property-address {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .comparison-details {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .comparison-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .comparison-detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-detail-label {
+            font-weight: 500;
+            color: #666;
+        }
+
+        .comparison-detail-value {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .comparison-view-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+            transition: transform 0.2s;
+            width: 100%;
+            text-align: center;
+        }
+
+        .comparison-view-btn:hover {
+            transform: translateY(-2px);
+        }
+
         /* Empty State */
         .empty-state {
             text-align: center;
@@ -953,6 +1185,62 @@ sort($cities);
                 background-attachment: scroll;
                 padding: 3rem 0;
                 min-height: 350px;
+            }
+
+            /* Comparison mobile optimizations */
+            .comparison-controls {
+                bottom: 10px;
+                right: 10px;
+                left: 10px;
+                padding: 0.75rem 1rem;
+                border-radius: 25px;
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+
+            .comparison-controls .comparison-count {
+                font-size: 0.8rem;
+            }
+
+            .comparison-controls .compare-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+            }
+
+            .comparison-content {
+                margin: 1rem;
+                min-height: calc(100vh - 2rem);
+            }
+
+            .comparison-header {
+                padding: 1.5rem 1rem;
+            }
+
+            .comparison-header h2 {
+                font-size: 1.4rem;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 1.5rem 1rem;
+            }
+
+            .comparison-property-content {
+                padding: 1rem;
+            }
+
+            .comparison-property-price {
+                font-size: 1.5rem;
+            }
+
+            .comparison-property-address {
+                font-size: 1rem;
+            }
+
+            .comparison-detail-row {
+                padding: 0.5rem 0;
             }
         }
 
@@ -1151,15 +1439,17 @@ sort($cities);
             <?php else: ?>
             <div class="property-grid" id="cardView">
                 <?php foreach ($listings as $home): ?>
-                <a href="property.php?id=<?php echo htmlspecialchars($home['id']); ?>" class="property-card">
-                    <div class="property-image">
-                        <img src="<?php echo htmlspecialchars($home['photo']); ?>" alt="California Home Photo">
-                        <?php if (!empty($home['status'])): ?>
-                        <div class="property-badge" style="background: <?php echo strtolower($home['status']) === 'active' ? '#10b981' : (strtolower($home['status']) === 'pending' ? '#f59e0b' : '#ef4444'); ?>">
-                            <?php echo htmlspecialchars($home['status']); ?>
+                <div class="property-card" data-property-id="<?php echo htmlspecialchars($home['id']); ?>">
+                    <input type="checkbox" class="property-checkbox" data-property-id="<?php echo htmlspecialchars($home['id']); ?>" onclick="event.stopPropagation(); toggleComparison(this);">
+                    <a href="property.php?id=<?php echo htmlspecialchars($home['id']); ?>" style="text-decoration: none; color: inherit; display: block;">
+                        <div class="property-image">
+                            <img src="<?php echo htmlspecialchars($home['photo']); ?>" alt="California Home Photo">
+                            <?php if (!empty($home['status'])): ?>
+                            <div class="property-badge" style="background: <?php echo strtolower($home['status']) === 'active' ? '#10b981' : (strtolower($home['status']) === 'pending' ? '#f59e0b' : '#ef4444'); ?>">
+                                <?php echo htmlspecialchars($home['status']); ?>
+                            </div>
+                            <?php endif; ?>
                         </div>
-                        <?php endif; ?>
-                    </div>
                     <div class="property-content">
                         <div class="property-price">$<?php echo $home['price']; ?></div>
                         <div class="property-title"><?php echo htmlspecialchars($home['address']); ?></div>
@@ -1181,7 +1471,8 @@ sort($cities);
                         </div>
                         <?php endif; ?>
                     </div>
-                </a>
+                    </a>
+                </div>
                 <?php endforeach; ?>
             </div>
 
@@ -1189,6 +1480,7 @@ sort($cities);
                 <table>
                     <thead>
                         <tr>
+                            <th>Compare</th>
                             <th>Photo</th>
                             <th>Price</th>
                             <th>Address</th>
@@ -1200,7 +1492,10 @@ sort($cities);
                     </thead>
                     <tbody>
                         <?php foreach ($listings as $home): ?>
-                        <tr>
+                        <tr data-property-id="<?php echo htmlspecialchars($home['id']); ?>">
+                            <td>
+                                <input type="checkbox" class="table-checkbox" data-property-id="<?php echo htmlspecialchars($home['id']); ?>" onclick="toggleComparison(this);">
+                            </td>
                             <td>
                                 <img src="<?php echo htmlspecialchars($home['photo']); ?>" alt="Property Photo" class="table-property-image">
                             </td>
@@ -1260,6 +1555,26 @@ sort($cities);
 
     <div id="map">
         <button class="map-close-btn" onclick="setLayout('card')" title="Close Map">✕</button>
+    </div>
+
+    <!-- Comparison Controls -->
+    <div class="comparison-controls" id="comparisonControls">
+        <div class="comparison-count" id="comparisonCount">0 properties selected</div>
+        <button class="compare-btn" id="compareBtn" onclick="showComparison()" disabled>Compare</button>
+        <button class="clear-comparison-btn" onclick="clearComparison()" title="Clear Selection">✕</button>
+    </div>
+
+    <!-- Comparison Modal -->
+    <div class="comparison-modal" id="comparisonModal">
+        <div class="comparison-content">
+            <div class="comparison-header">
+                <h2>Property Comparison</h2>
+                <button class="modal-close-btn" onclick="hideComparison()">✕</button>
+            </div>
+            <div class="comparison-grid" id="comparisonGrid">
+                <!-- Comparison content will be populated by JavaScript -->
+            </div>
+        </div>
     </div>
 
     <script async
@@ -1466,4 +1781,163 @@ function toggleMap() {
         setLayout('map');
     }
 }
+
+// Comparison functionality
+let selectedProperties = [];
+
+function toggleComparison(checkbox) {
+    const propertyId = checkbox.dataset.propertyId;
+    const property = listings.find(p => p.id === propertyId);
+    
+    if (!property) return;
+    
+    if (checkbox.checked) {
+        // Check if we already have 2 properties selected
+        if (selectedProperties.length >= 2) {
+            checkbox.checked = false;
+            alert('You can only compare up to 2 properties at a time.');
+            return;
+        }
+        
+        // Add property to selection
+        selectedProperties.push(property);
+        
+        // Add visual indicator
+        const propertyCard = document.querySelector(`.property-card[data-property-id="${propertyId}"]`);
+        const propertyRow = document.querySelector(`.property-table tr[data-property-id="${propertyId}"]`);
+        
+        if (propertyCard) propertyCard.classList.add('selected');
+        if (propertyRow) propertyRow.classList.add('selected');
+        
+    } else {
+        // Remove property from selection
+        selectedProperties = selectedProperties.filter(p => p.id !== propertyId);
+        
+        // Remove visual indicator
+        const propertyCard = document.querySelector(`.property-card[data-property-id="${propertyId}"]`);
+        const propertyRow = document.querySelector(`.property-table tr[data-property-id="${propertyId}"]`);
+        
+        if (propertyCard) propertyCard.classList.remove('selected');
+        if (propertyRow) propertyRow.classList.remove('selected');
+    }
+    
+    updateComparisonControls();
+}
+
+function updateComparisonControls() {
+    const comparisonControls = document.getElementById('comparisonControls');
+    const comparisonCount = document.getElementById('comparisonCount');
+    const compareBtn = document.getElementById('compareBtn');
+    
+    const count = selectedProperties.length;
+    
+    if (count > 0) {
+        comparisonControls.classList.add('visible');
+        comparisonCount.textContent = `${count} ${count === 1 ? 'property' : 'properties'} selected`;
+        compareBtn.disabled = count < 2;
+    } else {
+        comparisonControls.classList.remove('visible');
+    }
+}
+
+function clearComparison() {
+    selectedProperties = [];
+    
+    // Uncheck all checkboxes
+    document.querySelectorAll('.property-checkbox, .table-checkbox').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    
+    // Remove visual indicators
+    document.querySelectorAll('.property-card.selected').forEach(card => {
+        card.classList.remove('selected');
+    });
+    
+    document.querySelectorAll('.property-table tr.selected').forEach(row => {
+        row.classList.remove('selected');
+    });
+    
+    updateComparisonControls();
+}
+
+function showComparison() {
+    if (selectedProperties.length !== 2) {
+        alert('Please select exactly 2 properties to compare.');
+        return;
+    }
+    
+    const modal = document.getElementById('comparisonModal');
+    const grid = document.getElementById('comparisonGrid');
+    
+    // Generate comparison content
+    grid.innerHTML = selectedProperties.map(property => `
+        <div class="comparison-property">
+            <img src="${property.photo}" alt="Property Photo" class="comparison-property-image">
+            <div class="comparison-property-content">
+                <div class="comparison-property-price">$${property.price}</div>
+                <div class="comparison-property-address">${property.address}</div>
+                
+                <div class="comparison-details">
+                    <div class="comparison-detail-row">
+                        <span class="comparison-detail-label">Bedrooms</span>
+                        <span class="comparison-detail-value">${property.beds}</span>
+                    </div>
+                    <div class="comparison-detail-row">
+                        <span class="comparison-detail-label">Bathrooms</span>
+                        <span class="comparison-detail-value">${property.baths}</span>
+                    </div>
+                    <div class="comparison-detail-row">
+                        <span class="comparison-detail-label">Square Feet</span>
+                        <span class="comparison-detail-value">${property.sqft}</span>
+                    </div>
+                    <div class="comparison-detail-row">
+                        <span class="comparison-detail-label">Status</span>
+                        <span class="comparison-detail-value">${property.status || 'N/A'}</span>
+                    </div>
+                    ${property.agent_first || property.agent_last ? `
+                    <div class="comparison-detail-row">
+                        <span class="comparison-detail-label">Agent</span>
+                        <span class="comparison-detail-value">${property.agent_first} ${property.agent_last}</span>
+                    </div>
+                    ` : ''}
+                    ${property.office ? `
+                    <div class="comparison-detail-row">
+                        <span class="comparison-detail-label">Office</span>
+                        <span class="comparison-detail-value">${property.office}</span>
+                    </div>
+                    ` : ''}
+                </div>
+                
+                <a href="property.php?id=${property.id}" class="comparison-view-btn">View Full Details</a>
+            </div>
+        </div>
+    `).join('');
+    
+    modal.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+}
+
+function hideComparison() {
+    const modal = document.getElementById('comparisonModal');
+    modal.classList.remove('visible');
+    document.body.style.overflow = '';
+}
+
+// Close comparison modal with ESC key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        if (document.getElementById('comparisonModal').classList.contains('visible')) {
+            hideComparison();
+        } else if (currentLayout === 'map') {
+            setLayout('card');
+        }
+    }
+});
+
+// Close comparison modal when clicking outside
+document.getElementById('comparisonModal').addEventListener('click', function(event) {
+    if (event.target === this) {
+        hideComparison();
+    }
+});
 </script>

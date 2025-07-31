@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="29ed4967-c2c7-4e7e-ad4d-91e69225c0ce" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/api/generate_token.php" beforeDir="false" afterPath="$PROJECT_DIR$/api/generate_token.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/sync_openhouse.php" beforeDir="false" afterPath="$PROJECT_DIR$/api/sync_openhouse.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/sync_properties.php" beforeDir="false" afterPath="$PROJECT_DIR$/api/sync_properties.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/db_local.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/db_local.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/465d7d0c-155f-44fc-9187-4ecf14d50f4f.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/465d7d0c-155f-44fc-9187-4ecf14d50f4f.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/465d7d0c-155f-44fc-9187-4ecf14d50f4f/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/465d7d0c-155f-44fc-9187-4ecf14d50f4f/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,21 +26,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "yu",
-    "last_opened_file_path": "/Users/mbp/Desktop/IDX/sd3"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;yu&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/mbp/Desktop/IDX/sd3&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql",
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;,
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="29ed4967-c2c7-4e7e-ad4d-91e69225c0ce" name="Changes" comment="" />
