@@ -1,5 +1,6 @@
 <?php
 
+
 // $host = 'localhost';
 // $dbname = 'boxgra5_cali';
 // $dbuser = 'boxgra5_sd3';
@@ -39,6 +40,7 @@ $password = 'sd3_password_123'; // Password we just created
 $dbname = 'sd3'; // Using your existing sd3 database
 $port = 3306;
 
+
 // $conn = new mysqli($servername, $username, $password, $dbname, $port);
 
 // if ($conn->connect_error) {
@@ -50,4 +52,3 @@ $port = 3306;
 
 echo "<!-- WSL2 database connected successfully -->";
 ?>  -->
-
