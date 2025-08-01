@@ -1,7 +1,14 @@
 <?php
-include ('includes/db_local.php');  // Use local database settings
-include ('includes/functions.php');
-include ('includes/pagination.php');
+
+ session_start();
+include('api/db.php'); 
+include('includes/functions.php');
+include('includes/pagination.php');
+
+// include ('includes/db_local.php');  // Use local database settings
+// include ('includes/functions.php');
+// include ('includes/pagination.php');
+
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -14,9 +21,14 @@ $offset = ($page - 1) * $limit;
 $filter_sql = build_filter_query($_GET);
 $sort_sql = build_sort_query($_GET);
 
-$count_sql = "SELECT COUNT(*) as total FROM rets_property $filter_sql";
+$count_sql = "SELECT COUNT(*) as total FROM rets_property_yu $filter_sql";
 $count_result = $conn->query($count_sql);
 $total = $count_result ? $count_result->fetch_assoc()['total'] : 0;
+
+
+$sql = "SELECT L_ListingID, L_Address, L_City, L_State, L_Zip, L_SystemPrice, L_Keyword2, LM_Dec_3, LM_Int2_3, L_Photos, L_Remarks, LMD_MP_Latitude as Latitude, LMD_MP_Longitude as Longitude, 
+        LA1_UserFirstName, LA1_UserLastName, LO1_OrganizationName, L_Status, created_at
+        FROM rets_property_yu $filter_sql ORDER BY created_at DESC LIMIT $limit OFFSET $offset";
 
 // Get the latest created_at from the entire table
 $latest_created_at = null;
@@ -25,9 +37,13 @@ if ($latest_result && ($row = $latest_result->fetch_assoc())) {
     $latest_created_at = $row['latest_created_at'];
 }
 
-$sql = "SELECT L_ListingID, L_Address, L_City, L_State, L_Zip, L_SystemPrice, L_Keyword2, LM_Dec_3, LM_Int2_3, L_Photos, L_Remarks, LMD_MP_Latitude as Latitude, LMD_MP_Longitude as Longitude, 
-        LA1_UserFirstName, LA1_UserLastName, LO1_OrganizationName, L_Status, created_at
-        FROM rets_property $filter_sql $sort_sql LIMIT $limit OFFSET $offset";
+
+// $sql = "SELECT L_ListingID, L_Address, L_City, L_State, L_Zip, L_SystemPrice, L_Keyword2, LM_Dec_3, LM_Int2_3, L_Photos, L_Remarks, LMD_MP_Latitude as Latitude, LMD_MP_Longitude as Longitude, 
+//         LA1_UserFirstName, LA1_UserLastName, LO1_OrganizationName, L_Status, created_at
+//         FROM rets_property $filter_sql ORDER BY created_at DESC LIMIT $limit OFFSET $offset";
+//
+
+
 $result = $conn->query($sql);
 
 $listings = [];
@@ -36,10 +52,17 @@ if ($result) {
         $photos = [];
         if (!empty($row['L_Photos'])) {
             $photos = json_decode($row['L_Photos'], true);
-            if (!is_array($photos))
-                $photos = [];
+
+            if (!is_array($photos)) $photos = [];
         }
         $firstPhoto = $photos[0] ?? 'https://via.placeholder.com/300x200?text=No+Photo';
+        
+
+//             if (!is_array($photos))
+//                 $photos = [];
+//         }
+//         $firstPhoto = $photos[0] ?? 'https://via.placeholder.com/300x200?text=No+Photo';
+
 
         $listings[] = [
             'id' => $row['L_ListingID'] ?? '',
@@ -77,6 +100,7 @@ sort($cities);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>California Homes</title>
+
     <style>
         * {
             margin: 0;
@@ -310,6 +334,7 @@ sort($cities);
         }
 
         .search-form {
+
             display: flex;
             justify-content: space-between;
             gap: 1rem;
@@ -416,6 +441,8 @@ sort($cities);
             background: white;
             padding: 1.5rem 0;
             border-bottom: 1px solid #e2e8f0;
+
+            margin-top: 2rem;
         }
 
         .stats-content {
@@ -1264,8 +1291,21 @@ sort($cities);
                 <div style="width:2px; height:32px; background:white; margin:0 10px; border-radius:2px;"></div>
                 <span style="font-size: 1.5rem; font-weight: bold; color: white; margin-left: 0;">California Homes</span>
             </div>
-                <nav>
-                    <ul>
+            <nav>
+    <ul>
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <li style="color: white; margin-right: 10px;">
+                Welcome, <?php echo htmlspecialchars($_SESSION['email']); ?>
+            </li>
+            <li>
+                <a href="logout.php" class="btn btn-danger btn-sm">Logout</a>
+            </li>
+        <?php else: ?>
+            <li>
+                <a href="login.php" class="btn btn-primary btn-sm">Login</a>
+            </li>
+        <?php endif; ?>
+
                         <li><a href="index.php">Homes for Sale</a></li>
                         <li><a href="openhouse.php">Open Houses</a></li>
                     </ul>
@@ -1324,6 +1364,7 @@ sort($cities);
             <form method="GET" class="search-form">
                 <div class="form-group">
                     <label for="city">City</label>
+
                     <select id="city" name="city">
                         <option value="">All Cities</option>
                         <?php foreach ($cities as $city): ?>
@@ -1437,6 +1478,7 @@ sort($cities);
                 <a href="sync_properties.php" class="sync-btn">Sync Properties</a>
             </div>
             <?php else: ?>
+
             <div class="property-grid" id="cardView">
                 <?php foreach ($listings as $home): ?>
                 <div class="property-card" data-property-id="<?php echo htmlspecialchars($home['id']); ?>">
@@ -1475,6 +1517,7 @@ sort($cities);
                 </div>
                 <?php endforeach; ?>
             </div>
+
 
             <div class="property-table" id="tableView">
                 <table>

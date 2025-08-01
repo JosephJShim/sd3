@@ -1,6 +1,11 @@
 <?php
-include ('includes/db_local.php');
-include ('includes/functions.php');
+
+include('api/db.php');
+include('includes/functions.php');
+
+// include ('includes/db_local.php');
+// include ('includes/functions.php');
+
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -15,9 +20,15 @@ if (empty($property_id)) {
 }
 
 // Fetch property details
-$sql = 'SELECT * FROM rets_property WHERE L_ListingID = ?';
+
+$sql = "SELECT * FROM rets_property_yu WHERE L_ListingID = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param('s', $property_id);
+$stmt->bind_param("s", $property_id);
+
+// $sql = 'SELECT * FROM rets_property WHERE L_ListingID = ?';
+// $stmt = $conn->prepare($sql);
+// $stmt->bind_param('s', $property_id);
+
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -32,6 +43,30 @@ $property = $result->fetch_assoc();
 $photos = [];
 if (!empty($property['L_Photos'])) {
     $photos = json_decode($property['L_Photos'], true);
+
+//     if (!is_array($photos)) $photos = [];
+// }
+
+// // Parse all data if available
+// $all_data = [];
+// if (!empty($property['L_alldata'])) {
+//     $all_data = json_decode($property['L_alldata'], true);
+//     if (!is_array($all_data)) $all_data = [];
+// }
+
+// // Get open houses for this property
+// $openhouse_sql = "SELECT * FROM rets_openhouse WHERE L_ListingID = ? ORDER BY OpenHouseDate ASC";
+// $openhouse_stmt = $conn->prepare($openhouse_sql);
+// $openhouse_stmt->bind_param("s", $property_id);
+// $openhouse_stmt->execute();
+// $openhouse_result = $openhouse_stmt->get_result();
+
+// $openhouses = [];
+// while ($row = $openhouse_result->fetch_assoc()) {
+//     $openhouses[] = $row;
+// }
+
+
     if (!is_array($photos))
         $photos = [];
 }
@@ -314,6 +349,7 @@ $conn->close();
             background: #f8d7da;
             color: #721c24;
         }
+
         .property-header-row {
             display: flex;
             align-items: stretch;
@@ -342,6 +378,7 @@ $conn->close();
                 margin-left: 0;
             }
         }
+      
         @media (max-width: 768px) {
             .property-content {
                 grid-template-columns: 1fr;
@@ -364,6 +401,7 @@ $conn->close();
                 </div>
                 <nav>
                     <ul>
+
                     <li><a href="index.php">Homes for Sale</a></li>
                     <li><a href="openhouse.php">Open Houses</a></li>
                     </ul>
@@ -480,6 +518,7 @@ $conn->close();
                         <span class="detail-value"><?php echo htmlspecialchars($property['L_Keyword7'] ?? 'N/A'); ?></span>
                     </div>
                 </div>
+
 
                 <?php if (!empty($property['L_Remarks'])): ?>
                 <div class="property-description">

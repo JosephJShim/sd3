@@ -1,0 +1,26 @@
+name: Deploy to test.califorsale.org
+
+on:
+  push:
+    branches:
+      - main   # Deploys on pushes to main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup SSH Agent
+      uses: webfactory/ssh-agent@v0.7.0
+      with:
+        ssh-private-key: ${{ secrets.CPANEL_SSH_KEY }}
+
+    - name: SSH into cPanel and pull latest code
+      run: |
+        ssh -o StrictHostKeyChecking=no boxgra6@joseph.califorsale.org "
+          cd ~/test.califorsale.org &&
+          git pull origin main
+        "

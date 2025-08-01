@@ -2,8 +2,11 @@
 // Trestle API Token Generation Script
 // Run this once to generate and store your API token
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+include('../api/db.php');
 // Include local database configuration
-include('../includes/db_local.php');
 
 // Trestle API credentials
 $token_type = 'trestle';
@@ -15,7 +18,8 @@ echo "<h2>🔑 Trestle API Token Generation</h2>";
 echo "<hr>";
 
 // Check for cached token
-$stmt = $conn->prepare("SELECT access_token, expires_at FROM token_store WHERE token_type = ?");
+$stmt = $conn->prepare("SELECT access_token, expires_at FROM token_store_yu WHERE token_type = ?");
+
 $stmt->bind_param("s", $token_type);
 $stmt->execute();
 $stmt->store_result();
@@ -67,7 +71,8 @@ if ($http_code == 200) {
 
         // Upsert token in database
         $stmt = $conn->prepare("
-            INSERT INTO token_store (token_type, access_token, expires_at)
+
+            INSERT INTO token_store_yu (token_type, access_token, expires_at)
             VALUES (?, ?, ?)
             ON DUPLICATE KEY UPDATE access_token = VALUES(access_token), expires_at = VALUES(expires_at)
         ");
@@ -93,6 +98,4 @@ if ($http_code == 200) {
 
 $conn->close();
 
-echo "<hr>";
-echo "<p><a href='index.php'>🏠 Go to Property Search</a> | <a href='sync_properties.php'>🔄 Sync Properties</a></p>";
-?> 
+

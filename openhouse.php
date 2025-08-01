@@ -1,7 +1,14 @@
 <?php
-include('includes/db_local.php');
+
+include('api/db.php');
 include('includes/functions.php');
 include('includes/pagination.php');
+
+
+
+// include('includes/db_local.php');
+// include('includes/functions.php');
+// include('includes/pagination.php');
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -40,7 +47,11 @@ if (!empty($where_conditions)) {
 }
 
 // Get total count
-$count_sql = "SELECT COUNT(*) as total FROM rets_openhouse $filter_sql";
+
+$count_sql = "SELECT COUNT(*) as total FROM rets_openhouse_yu $filter_sql";
+
+// $count_sql = "SELECT COUNT(*) as total FROM rets_openhouse $filter_sql";
+
 if (!empty($params)) {
     $count_stmt = $conn->prepare($count_sql);
     $count_stmt->bind_param($param_types, ...$params);
@@ -55,7 +66,9 @@ $total = $count_result ? $count_result->fetch_assoc()['total'] : 0;
 // Get open house data
 $sql = "SELECT L_ListingID, L_DisplayId, OpenHouseDate, OH_StartTime, OH_EndTime, 
         OH_StartDate, OH_EndDate, updated_date, created_at, all_data
-        FROM rets_openhouse $filter_sql 
+
+        FROM rets_openhouse_yu $filter_sql 
+
         ORDER BY OpenHouseDate ASC, OH_StartTime ASC 
         LIMIT $limit OFFSET $offset";
 
@@ -239,6 +252,8 @@ if ($result) {
             background: white;
             padding: 1.5rem 0;
             border-bottom: 1px solid #e2e8f0;
+            margin-top: 2rem;
+
         }
 
         .stats-content {
@@ -467,6 +482,7 @@ if ($result) {
     <header>
         <div class="container">
             <div class="header-content">
+
             <div class="logo" style="display: flex; align-items: center; gap: 2px;">
                 <img src="assets/white-logo.png" alt="California Homes Logo" style="height: 48px; width: auto; display: inline-block; vertical-align: middle;" />
                 <div style="width:2px; height:32px; background:white; margin:0 10px; border-radius:2px;"></div>
@@ -505,7 +521,10 @@ if ($result) {
                     <input type="text" id="listing_id" name="listing_id" placeholder="Search by listing ID" value="<?php echo $_GET['listing_id'] ?? ''; ?>">
                 </div>
                 <div class="form-group">
+
+
                     <button type="submit" class="search-btn">Search</button>
+
                 </div>
             </form>
         </div>

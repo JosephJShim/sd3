@@ -1,9 +1,14 @@
 <?php
+
+
+require_once 'db.php';
+
 // Property Sync Script for Trestle API
 // This script fetches property listings from Trestle API and stores them in local database
 
 // Include local database configuration
-include('../includes/db_local.php');
+// include('includes/db_local.php');
+
 
 // Enable error reporting for debugging
 error_reporting(E_ALL);
@@ -13,7 +18,9 @@ echo "<h2>🏠 Trestle API Property Sync</h2>";
 echo "<hr>";
 
 // Fetch valid token
-$stmt = $conn->prepare("SELECT access_token, expires_at FROM token_store WHERE token_type = 'trestle' LIMIT 1");
+
+$stmt = $conn->prepare("SELECT access_token, expires_at FROM token_store_yu WHERE token_type = 'trestle' LIMIT 1");
+
 $stmt->execute();
 $stmt->store_result();
 $stmt->bind_result($access_token, $expires_at);
@@ -70,7 +77,11 @@ if (!empty($response->{'@odata.count'})) {
 
         foreach ($response->value as $index => $row) {
             $listid = $conn->real_escape_string($row->ListingKey);
-            $check = $conn->query("SELECT L_ListingID FROM rets_property WHERE L_ListingID = '$listid'");
+
+            $check = $conn->query("SELECT L_ListingID FROM rets_property_yu WHERE L_ListingID = '$listid'");
+
+            // $check = $conn->query("SELECT L_ListingID FROM rets_property WHERE L_ListingID = '$listid'");
+
             
             if ($check->num_rows === 0) {
                 $media = [];
@@ -83,7 +94,9 @@ if (!empty($response->{'@odata.count'})) {
                 $levels = !empty($row->Levels) ? $row->Levels : '';
                 $alldata = json_encode($row);
 
-                $stmt = $conn->prepare("INSERT INTO rets_property (
+
+                $stmt = $conn->prepare("INSERT INTO rets_property_yu (
+
                     L_ListingID, L_DisplayId, L_Address, L_Zip, LM_char10_70, L_AddressStreet,
                     L_City, L_State, L_Class, L_Type_, L_Keyword2, LM_Dec_3, L_Keyword1, L_Keyword5,
                     L_Keyword7, L_SystemPrice, LM_Int2_3, L_ListingDate, ListingContractDate,
