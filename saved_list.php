@@ -1627,9 +1627,7 @@ sort($cities);
 
             <?php if (empty($listings)): ?>
             <div class="empty-state">
-                <h3>No properties found</h3>
-                <p>Try running the sync script to import properties from the Trestle API.</p>
-                <a href="sync_properties.php" class="sync-btn">Sync Properties</a>
+                <h3>No properties saved yet</h3>
             </div>
             <?php else: ?>
             <div class="property-grid" id="cardView">
@@ -1869,6 +1867,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     heartSpan.style.color = 'red';
                     this.dataset.saved = '1';
                 }
+                location.reload();
             })
             .catch(err => console.error('Save toggle failed:', err));
         });
