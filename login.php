@@ -28,6 +28,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $_SESSION['user_id'] = $row['id'];
                 $_SESSION['email'] = $row['email'];
                 $_SESSION['first_name'] = $row['first_name'];
+                if ($row['email'] === 'admin@califorsale.org') {
+                    $_SESSION['is_admin'] = 1;
+                } else {
+                    $_SESSION['is_admin'] = 0;
+                }
                 $response = ["success" => true, "message" => "Login successful."];
             } else {
                 $response['message'] = "Incorrect password.";

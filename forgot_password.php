@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $mail->isHTML(true);
             $mail->Subject = 'Reset Your Password';
 
-            $resetLink = "https://test.califorsale.org/reset_password.php?token=$token";
+            $resetLink = "https://califorsale.org/reset_password.php?token=$token";
 
             $mail->Body = "
                 Hi {$user['first_name']},<br><br>

@@ -1371,55 +1371,6 @@ sort($cities);
         </div>
         
         <?php if (session_status() === PHP_SESSION_NONE) session_start(); ?>
-        
-        <div id="menuIcon" onclick="toggleDashboard()" style="position: fixed; top: 10px; right: 10px; cursor: pointer; z-index: 999; font-size: 24px;">
-            &#9776;
-        </div>
-        
-        
-        <div id="userDashboard" style="
-            position: fixed;
-            top: 0;
-            right: -320px;
-            width: 300px;
-            height: 100vh;
-            background-color: white;
-            border-left: 1px solid #ccc;
-            padding: 20px;
-            box-shadow: -2px 0 10px rgba(0,0,0,0.2);
-            transition: right 0.3s ease;
-            z-index: 1000;
-        ">
-            <div style="margin-bottom: 20px;">
-                <h3 style="color: black; font-weight: bold;">
-                    <?php
-                    if (isset($_SESSION['user_id'])) {
-                        echo "Welcome, " . htmlspecialchars($_SESSION['first_name']);
-                    } else {
-                        echo "Welcome, please sign in";
-                    }
-                    ?>
-                </h3>
-                <hr style="border: none; height: 2px; background-color: black; margin-top: 10px; margin-bottom: 20px;">
-            </div>
-           
-            <style>
-                .dashboard-link {
-                    text-decoration: none;
-                    color: black;
-                    font-size: 16px;
-                }
-                .dashboard-link:hover {
-                    color: #555;
-                }
-            </style>
-            <?php if (isset($_SESSION['user_id'])): ?>
-                <div style="margin-bottom: 20px;"><a class="dashboard-link" href="saved_list.php">Saved Listings</a></div>
-                <div><a class="dashboard-link" href="logout.php">Logout</a></div>
-            <?php else: ?>
-                <div style="margin-bottom: 20px;"> <a class="dashboard-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a> </div>
-                <div> <a class="dashboard-link" href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Register</a> </div>
-            <?php endif; ?>
         </div>
     </header>
 

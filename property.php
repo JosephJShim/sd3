@@ -89,6 +89,7 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($property['L_Address']); ?> - California Homes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         * {
@@ -420,6 +421,7 @@ $conn->close();
             }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     <header>
@@ -472,6 +474,16 @@ $conn->close();
                         </div>
                     <?php endif; ?>
                 </div>
+            <?php endif; ?>
+            <?php if (isset($_SESSION['email']) && $_SESSION['email'] === 'admin@califorsale.org'): ?>
+                <form method="POST" action="admin_delete_listing.php" onsubmit="return confirm('Are you sure you want to delete this listing?');" style="margin-top: 10px;">
+                    <input type="hidden" name="listing_id" value="<?php echo htmlspecialchars($property_id); ?>">
+                    <button type="submit" class="back-btn" style="background-color: #dc3545; color: white;">Delete This Listing</button>
+                </form>
+            
+                <button class="back-btn" style="background-color: #0d6efd; color: white; margin-top: 10px;" data-bs-toggle="modal" data-bs-target="#editListingModal">
+                    Edit This Listing
+                </button>
             <?php endif; ?>
             <a href="https://www.google.com/maps/search/?api=1&query=<?php echo $address; ?>" 
             target="_blank" class="back-btn" style="margin-top: 10px; display: inline-block;">
@@ -650,6 +662,78 @@ $tags_to_display = array_slice($tags, 0, 10);
             </div>
         </div>
     </div>
+    
+    <!-- Edit Listing Modal (for Admin) -->
+    <div class="modal fade" id="editListingModal" tabindex="-1" aria-labelledby="editListingModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content p-3">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Listing</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+    
+          <form id="editListingForm">
+            <div class="modal-body">
+                <input type="hidden" name="listing_id" value="<?php echo htmlspecialchars($property['L_ListingID']); ?>">
+              <div class="mb-3">
+                <label for="price" class="form-label">Price</label>
+                <input type="number" step="1" class="form-control" name="price" value="<?php echo htmlspecialchars(str_replace(',', '', $property['L_SystemPrice'])); ?>">
+              </div>
+    
+              <div class="mb-3">
+                <label for="beds" class="form-label">Beds</label>
+                <input type="number" class="form-control" name="beds" value="<?php echo htmlspecialchars($property['L_Keyword2']); ?>">
+              </div>
+    
+              <div class="mb-3">
+                <label for="baths" class="form-label">Baths</label>
+                <input type="number" step="0.1" class="form-control" name="baths" value="<?php echo htmlspecialchars($property['LM_Dec_3']); ?>">
+              </div>
+    
+              <div class="mb-3">
+                <label for="sqft" class="form-label">Square Feet</label>
+                <input type="number" class="form-control" name="sqft" value="<?php echo htmlspecialchars($property['LM_Int2_3']); ?>">
+              </div>
+    
+              <div class="mb-3">
+                <label for="remarks" class="form-label">Remarks</label>
+                <textarea class="form-control" name="remarks"><?php echo htmlspecialchars($property['L_Remarks']); ?></textarea>
+              </div>
+    
+              <div class="mb-3">
+                <label for="agent_first" class="form-label">Agent First Name</label>
+                <input type="text" class="form-control" name="agent_first" value="<?php echo htmlspecialchars($property['LA1_UserFirstName']); ?>">
+              </div>
+    
+              <div class="mb-3">
+                <label for="agent_last" class="form-label">Agent Last Name</label>
+                <input type="text" class="form-control" name="agent_last" value="<?php echo htmlspecialchars($property['LA1_UserLastName']); ?>">
+              </div>
+    
+              <div class="mb-3">
+                <label for="office" class="form-label">Office Name</label>
+                <input type="text" class="form-control" name="office" value="<?php echo htmlspecialchars($property['LO1_OrganizationName']); ?>">
+              </div>
+    
+              <div class="mb-3">
+                <label class="form-label">Status</label>
+                <select name="status" class="form-select" required>
+                  <option value="active" <?php echo ($property['L_Status'] === 'active') ? 'selected' : ''; ?>>Active</option>
+                  <option value="pending" <?php echo ($property['L_Status'] === 'pending') ? 'selected' : ''; ?>>Pending</option>
+                </select>
+              </div>
+    
+              <div id="editFeedback" class="text-center mt-2"></div>
+            </div>
+    
+            <div class="modal-footer d-flex justify-content-between">
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <?php if (!empty($photos) && count($photos) > 1): ?>
@@ -733,3 +817,53 @@ $tags_to_display = array_slice($tags, 0, 10);
     </script>
 </body>
 </html>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("editListingForm");
+  const feedback = document.getElementById("editFeedback");
+
+  form?.addEventListener("submit", function (e) {
+    e.preventDefault();
+    feedback.textContent = "Saving...";
+
+    const formData = new FormData(form);
+
+    fetch("admin_update_listing.php", {
+      method: "POST",
+      body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        feedback.className = "text-success";
+        feedback.textContent = "Listing updated successfully. Reloading...";
+        setTimeout(() => location.reload(), 1500);
+      } else {
+        feedback.className = "text-danger";
+        feedback.textContent = data.message || "Failed to update listing.";
+      }
+    })
+    .catch(() => {
+      feedback.className = "text-danger";
+      feedback.textContent = "An error occurred.";
+    });
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  const editModal = document.getElementById('editListingModal');
+  const editForm = document.getElementById('editListingForm');
+
+  if (editModal && editForm) {
+    editModal.addEventListener('hidden.bs.modal', function () {
+      editForm.reset();
+
+      const feedback = document.getElementById('editFeedback');
+      if (feedback) {
+        feedback.innerText = '';
+        feedback.className = '';
+      }
+    });
+  }
+});
+</script>

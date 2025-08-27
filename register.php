@@ -13,8 +13,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $phone = trim($_POST['phone'] ?? '');
     $password = $_POST['password'] ?? '';
     $confirm = $_POST['confirm'] ?? '';
-    $budget_range = $_POST['budget_range'] ?? '';
-    $alert_frequency = $_POST['alert_frequency'] ?? 'none';
+    $minprice = trim($_POST['minprice'] ?? '');
+    $maxprice = trim($_POST['maxprice'] ?? '');
+    $minbeds = trim($_POST['minbeds'] ?? '');
+    $minbaths = trim($_POST['minbaths'] ?? '');
+    $preferredcity = trim($_POST['preferredcity'] ?? '');
 
     if (!$first_name || !$last_name || !$email || !$password || !$confirm) {
         $response['message'] = "Please fill in all required fields.";
@@ -31,10 +34,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $response['message'] = "Email already registered.";
         } else {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $insert = "INSERT INTO users (first_name, last_name, phone_number, email, password, budget_range, alert_frequency)
-                       VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $insert = "INSERT INTO users (first_name, last_name, phone_number, email, password, minprice, maxprice, minbeds, minbaths, preferredcity)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = mysqli_prepare($conn, $insert);
-            mysqli_stmt_bind_param($stmt, 'sssssss', $first_name, $last_name, $phone, $email, $hashed_password, $budget_range, $alert_frequency);
+            mysqli_stmt_bind_param($stmt, 'ssssssssss', $first_name, $last_name, $phone, $email, $hashed_password, $minprice, $maxprice, $minbeds, $minbaths, $preferredcity);
 
             if (mysqli_stmt_execute($stmt)) {
                 $_SESSION['user_id'] = mysqli_insert_id($conn);

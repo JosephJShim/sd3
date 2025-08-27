@@ -1425,7 +1425,12 @@ if (isset($_SESSION['user_id'])) {
                 }
             </style>
             <?php if (isset($_SESSION['user_id'])): ?>
+                <div style="margin-bottom: 20px;"><a class="dashboard-link" href="#" data-bs-toggle="modal" data-bs-target="#profileInfoModal">Profile Info</a></div>
                 <div style="margin-bottom: 20px;"><a class="dashboard-link" href="saved_list.php">Saved Listings</a></div>
+                <div style="margin-bottom: 20px;"><a class="dashboard-link" href="filter_preferences.php">Filter by Preferences</a></div>
+                <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1): ?>
+                    <div style="margin-bottom: 20px;"><a class="dashboard-link" href="#" data-bs-toggle="modal" data-bs-target="#adminDeleteUserModal">Remove Users</a></div>
+                <?php endif; ?>
                 <div><a class="dashboard-link" href="logout.php">Logout</a></div>
             <?php else: ?>
                 <div style="margin-bottom: 20px;"> <a class="dashboard-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a> </div>
@@ -1843,6 +1848,101 @@ if (isset($_SESSION['user_id'])) {
             </div>
             <div class="modal-footer d-flex justify-content-between">
               <button type="submit" class="btn btn-primary">Send Reset Link</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Profile Info Modal -->
+    <div class="modal fade" id="profileInfoModal" tabindex="-1" aria-labelledby="profileInfoModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content p-3">
+          <div class="modal-header">
+            <h5 class="modal-title" id="profileInfoModalLabel">Your Profile Info</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="resetProfileForm()"></button>
+          </div>
+          <form id="profileInfoForm">
+            <div class="modal-body">
+              <div id="profileFeedback" class="text-center mb-2"></div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">First Name</label>
+                  <input type="text" name="first_name" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Last Name</label>
+                  <input type="text" name="last_name" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Phone Number</label>
+                  <input type="text" name="phone_number" class="form-control">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Email</label>
+                  <input type="email" name="email" class="form-control" disabled>
+                </div>
+    
+                <div class="col-12 mt-3"><h6>Optional Preferences</h6></div>
+                <div class="col-md-6">
+                  <label class="form-label">Min Price</label>
+                  <input type="number" name="minprice" class="form-control">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Max Price</label>
+                  <input type="number" name="maxprice" class="form-control">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Min Beds</label>
+                  <input type="number" name="minbeds" class="form-control">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Min Baths</label>
+                  <input type="number" name="minbaths" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Preferred City</label>
+                  <select class="form-select" name="preferredcity" id="preferredcity">
+                    <option value="">-- Select City --</option>
+                    <?php foreach ($cities as $city): ?>
+                      <option value="<?= $city ?>"><?= $city ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Account Created</label>
+                  <input type="text" class="form-control" name="created_at" disabled>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="resetProfileForm()">Cancel</button>
+              <button type="submit" class="btn btn-primary">Update Profile</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Admin Delete User Modal -->
+    <div class="modal fade" id="adminDeleteUserModal" tabindex="-1" aria-labelledby="adminDeleteUserModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+          <div class="modal-header">
+            <h5 class="modal-title" id="adminDeleteUserModalLabel">Delete a User</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form id="adminDeleteUserForm">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="adminDeleteEmail" class="form-label">Enter user email to delete</label>
+                <input type="email" class="form-control" id="adminDeleteEmail" name="email" required>
+              </div>
+              <div id="adminDeleteFeedback" class="mt-2 text-center"></div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+              <button type="submit" class="btn btn-danger">Delete User</button>
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             </div>
           </form>
@@ -2432,6 +2532,99 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         feedback.className = "text-danger text-center mt-2";
         feedback.innerText = data.message || "Failed to send reset link.";
+      }
+    })
+    .catch(() => {
+      feedback.className = "text-danger text-center mt-2";
+      feedback.innerText = "Something went wrong.";
+    });
+  });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const profileForm = document.getElementById('profileInfoForm');
+  const feedback = document.getElementById('profileFeedback');
+
+  const profileModal = document.getElementById('profileInfoModal');
+  profileModal.addEventListener('show.bs.modal', () => {
+    fetch('get_profile.php')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          for (const key in data.profile) {
+            const input = profileForm.querySelector(`[name="${key}"]`);
+            if (input) {
+              if (input.tagName === 'SELECT') {
+                input.querySelector(`option[value="${data.profile[key]}"]`)?.setAttribute("selected", true);
+              } else {
+                input.value = data.profile[key] ?? '';
+              }
+            }
+          }
+        } else {
+          feedback.textContent = "Failed to load profile.";
+        }
+      });
+  });
+
+  profileForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    feedback.textContent = "Updating...";
+    const formData = new FormData(profileForm);
+
+    fetch('update_profile.php', {
+      method: 'POST',
+      body: formData
+    })
+    .then(res => res.text())
+    .then(text => {
+      feedback.className = "text-success";
+      feedback.textContent = "Profile updated successfully!";
+      setTimeout(() => {
+        const modal = bootstrap.Modal.getInstance(document.getElementById('profileInfoModal'));
+        if (modal) modal.hide();
+        location.reload();
+      }, 500);
+    })
+    .catch(() => {
+      feedback.className = "text-danger";
+      feedback.textContent = "Update failed.";
+    });
+  });
+});
+
+function resetProfileForm() {
+  document.getElementById('profileInfoForm').reset();
+  document.getElementById('profileFeedback').textContent = '';
+}
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const adminForm = document.getElementById("adminDeleteUserForm");
+  const feedback = document.getElementById("adminDeleteFeedback");
+
+  adminForm.addEventListener("submit", function (e) {
+    e.preventDefault(); 
+    feedback.innerText = "Deleting...";
+
+    const formData = new FormData(adminForm);
+
+    fetch("admin_delete_user.php", {
+      method: "POST",
+      body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        feedback.className = "text-success text-center mt-2";
+        feedback.innerText = data.message || "User deleted successfully.";
+        adminForm.reset();
+      } else {
+        feedback.className = "text-danger text-center mt-2";
+        feedback.innerText = data.message || "Failed to delete user.";
       }
     })
     .catch(() => {

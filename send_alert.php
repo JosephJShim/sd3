@@ -41,7 +41,7 @@ if (!$user) {
 
 $toEmail = $user['email'];
 $firstName = $user['first_name'];
-$propertyLink = "https://test.califorsale.org/property.php?id=" . urlencode($property_id);
+$propertyLink = "https://califorsale.org/property.php?id=" . urlencode($property_id);
 
 try {
     $mail = new PHPMailer(true);
