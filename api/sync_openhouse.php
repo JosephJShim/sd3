@@ -143,7 +143,7 @@ for ($batch = 0; $batch < $total_batches; $batch++) {
             }
             
             // Check if record exists
-            $check_sql = "SELECT id FROM rets_openhouse_yu WHERE L_ListingID = ? AND OpenHouseDate = ?";
+            $check_sql = "SELECT id FROM rets_openhouse WHERE L_ListingID = ? AND OpenHouseDate = ?";
             $check_stmt = $conn->prepare($check_sql);
             $check_stmt->bind_param("ss", $openhouse['ListingKey'], $openhouse_date);
             $check_stmt->execute();
@@ -168,7 +168,7 @@ for ($batch = 0; $batch < $total_batches; $batch++) {
             
             if ($check_result->num_rows > 0) {
                 // Update existing record
-                $update_sql = "UPDATE rets_openhouse_yu SET 
+                $update_sql = "UPDATE rets_openhouse SET 
                     L_DisplayId = ?,
                     OH_StartTime = ?,
                     OH_EndTime = ?,
@@ -205,7 +205,7 @@ for ($batch = 0; $batch < $total_batches; $batch++) {
                 $update_stmt->close();
             } else {
                 // Insert new record
-                $insert_sql = "INSERT INTO rets_openhouse_yu (
+                $insert_sql = "INSERT INTO rets_openhouse (
                     L_ListingID, L_DisplayId, OpenHouseDate, OH_StartTime, OH_EndTime, 
                     OH_StartDate, OH_EndDate, updated_date, API_OH_StartDate, API_OH_EndDate, all_data
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -261,7 +261,7 @@ echo "</ul>";
 
 // Show some recent open houses
 $recent_sql = "SELECT L_ListingID, OpenHouseDate, OH_StartTime, OH_EndTime, created_at 
-               FROM rets_openhouse_yu 
+               FROM rets_openhouse
                ORDER BY created_at DESC 
                LIMIT 5";
 $recent_result = $conn->query($recent_sql);
